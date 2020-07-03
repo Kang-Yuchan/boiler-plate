@@ -16,13 +16,23 @@
 ## Install
 
 ```sh
+cd client
+yarn install
+
+cd server
 yarn install
 ```
 
 ## Usage
 
 ```sh
+client
+
 yarn start
+
+server
+
+yarn dev
 ```
 
 ## Author
