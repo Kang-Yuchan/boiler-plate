@@ -4,21 +4,18 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const User = require("./models/User");
+const config = require("./config/key");
 dotenv.config();
 
 const PORT = process.env.PORT;
-const DB_PASSWORD = process.env.DB_PASSWORD;
 
 mongoose
-  .connect(
-    `mongodb+srv://kangyuchan:${DB_PASSWORD}@cluster0.g9bv5.mongodb.net/test?retryWrites=true&w=majority`,
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      useFindAndModify: false
-    }
-  )
+  .connect(config.mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+  })
   .then(() => console.log("MongoDB connected.."))
   .catch(error => console.log(error));
 
