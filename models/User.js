@@ -23,7 +23,7 @@ const userSchema = mongoose.Schema({
   },
   role: {
     type: Number,
-    default: 0
+    default: 0 // admin: 1, default: 0, drop_user: 99
   },
   image: String,
   token: {
@@ -75,6 +75,24 @@ userSchema.methods.generateToken = function (callback) {
       return callback(err);
     }
     callback(null, user);
+  });
+};
+
+userSchema.statics.findByToken = function (token, callback) {
+  var user = this;
+  jwt.verify(token, "secretToken", function (err, decoded) {
+    user.findOne(
+      {
+        _id: decoded,
+        token: token
+      },
+      function (err, user) {
+        if (err) {
+          return callback(err);
+        }
+        callback(null, user);
+      }
+    );
   });
 };
 
