@@ -9,7 +9,7 @@
   </a>
 </p>
 
-> React + express + Redux boiler-plate
+> React + express + Redux + MongoDB boiler-plate
 
 ### 🏠 [Homepage](https://github.com/Kang-Yuchan/boiler-plate)
 
