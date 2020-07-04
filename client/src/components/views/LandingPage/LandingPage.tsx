@@ -1,6 +1,8 @@
 import * as React from "react";
 import styled from "styled-components";
 import Axios from "axios";
+import { useDispatch } from "react-redux";
+import { LOG_OUT_REQUEST } from "../../../_reducer/user";
 
 export const Main = styled.div`
   display: flex;
@@ -11,12 +13,23 @@ export const Main = styled.div`
 `;
 
 const LandingPage: React.FC = () => {
+  const dispatch = useDispatch();
   React.useEffect(() => {
-    Axios.get("http://localhost:8080/api/hello").then(response =>
-      console.log(response)
-    );
+    Axios.get("/hello").then(response => console.log(response));
   }, []);
-  return <Main>LandingPage</Main>;
+
+  const onLogOut = React.useCallback(() => {
+    dispatch({
+      type: LOG_OUT_REQUEST
+    });
+  }, []);
+
+  return (
+    <Main>
+      LandingPage
+      <button onClick={onLogOut}>Log out</button>
+    </Main>
+  );
 };
 
 export default LandingPage;
