@@ -1,4 +1,11 @@
-import { all, fork, takeLatest, call, put } from "redux-saga/effects";
+import {
+  all,
+  fork,
+  takeLatest,
+  call,
+  put,
+  takeEvery
+} from "redux-saga/effects";
 import {
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
@@ -9,7 +16,10 @@ import {
   LOG_OUT_REQUEST,
   LOG_OUT_SUCCESS,
   LOG_OUT_FAILURE,
-  Action
+  AUTH_REQUEST,
+  Action,
+  AUTH_SUCCESS,
+  AUTH_FAILURE
 } from "../_reducer/user";
 import Axios from "axios";
 
@@ -92,6 +102,34 @@ function* watchSignup(): Generator {
   yield takeLatest(SIGN_UP_REQUEST, signUp);
 }
 
+function authAPI(authData: Action) {
+  return Axios.get("/users/auth", authData);
+}
+
+function* auth(action: Action): Generator {
+  try {
+    yield call(authAPI, action.data);
+    yield put({
+      type: AUTH_SUCCESS
+    });
+  } catch (error) {
+    console.error(error);
+    yield put({
+      type: AUTH_FAILURE,
+      error: error
+    });
+  }
+}
+
+function* watchAuth(): Generator {
+  yield takeEvery(AUTH_REQUEST, auth);
+}
+
 export default function* userSaga(): Generator {
-  yield all([fork(watchLogin), fork(watchLogout), fork(watchSignup)]);
+  yield all([
+    fork(watchLogin),
+    fork(watchLogout),
+    fork(watchSignup),
+    fork(watchAuth)
+  ]);
 }

@@ -29,6 +29,10 @@ export const LOG_OUT_REQUEST = "LOG_OUT_REQUEST";
 export const LOG_OUT_SUCCESS = "LOG_OUT_SUCCESS";
 export const LOG_OUT_FAILURE = "LOG_OUT_FAILURE";
 
+export const AUTH_REQUEST = "AUTH_REQUEST";
+export const AUTH_SUCCESS = "AUTH_SUCCESS";
+export const AUTH_FAILURE = "AUTH_FAILURE";
+
 const reducer = (state = initialState, action: Action) => {
   return produce(state, draft => {
     switch (action.type) {
@@ -72,6 +76,20 @@ const reducer = (state = initialState, action: Action) => {
       case SIGN_UP_FAILURE: {
         draft.isSigningUp = false;
         draft.signUpErrorReason = action.error;
+        break;
+      }
+      case AUTH_REQUEST: {
+        draft.me = null;
+        draft.logInErrorReason = "";
+        break;
+      }
+      case AUTH_SUCCESS: {
+        draft.me = action.data;
+        break;
+      }
+      case AUTH_FAILURE: {
+        draft.isSigningUp = false;
+        draft.logInErrorReason = action.error;
         break;
       }
       default: {
