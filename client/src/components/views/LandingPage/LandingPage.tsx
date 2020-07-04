@@ -1,5 +1,14 @@
 import * as React from "react";
+import styled from "styled-components";
 import Axios from "axios";
+
+export const Main = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+`;
 
 const LandingPage: React.FC = () => {
   React.useEffect(() => {
@@ -7,7 +16,7 @@ const LandingPage: React.FC = () => {
       console.log(response)
     );
   }, []);
-  return <div className='LandingPage'>LandingPage</div>;
+  return <Main>LandingPage</Main>;
 };
 
 export default LandingPage;
