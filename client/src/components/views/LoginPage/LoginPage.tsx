@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { LOG_IN_REQUEST } from "../../../_reducer/user";
 
-const Form = styled.form`
+export const Form = styled.form`
   display: flex;
   flex-direction: column;
 `;
@@ -44,10 +44,12 @@ const LoginPage: React.FC = () => {
       <Form onSubmit={onSubmitForm}>
         <label>Email</label>
         <input type='email' value={email} onChange={onChangeEmail} />
+
         <label>Password</label>
         <input type='password' value={password} onChange={onChangePassword} />
+
         <br />
-        <button>Login</button>
+        <button type='submit'>Login</button>
       </Form>
     </Main>
   );

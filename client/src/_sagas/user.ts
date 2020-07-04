@@ -70,7 +70,7 @@ function* watchLogout(): Generator {
 }
 
 function signUpAPI(signUpData: Action) {
-  return Axios.post("/user/register", signUpData);
+  return Axios.post("/users/register", signUpData);
 }
 
 function* signUp(action: Action): Generator {
