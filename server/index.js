@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const User = require("./models/User");
+const { User } = require("./models/User");
 const config = require("./config/key");
 const auth = require("./middleware/auth");
 dotenv.config();
@@ -13,6 +13,9 @@ dotenv.config();
 const PORT = process.env.PORT;
 const cors_origin = [`http://localhost:5000`];
 
+app.use(bodyParser.urlencoded({ extended: true })); // application/x-www-form-urlencoded
+app.use(bodyParser.json()); // application/json
+app.use(cookieParser());
 mongoose
   .connect(config.mongoURI, {
     useNewUrlParser: true,
@@ -23,21 +26,12 @@ mongoose
   .then(() => console.log("MongoDB connected.."))
   .catch(error => console.log(error));
 
-app.use(bodyParser.urlencoded({ extended: true })); // application/x-www-form-urlencoded
-app.use(bodyParser.json()); // application/json
-app.use(cookieParser());
 app.use(
   cors({
     origin: cors_origin,
     credentials: true
   })
 );
-
-app.get("/", (req, res) => res.send("Hello express"));
-
-app.get("/api/hello", (req, res) => {
-  res.send("Hello frontend!!");
-});
 
 app.post("/api/users/register", (req, res) => {
   const user = new User(req.body);
@@ -78,7 +72,7 @@ app.post("/api/users/login", (req, res) => {
           if (err) {
             return res.status(400).send(err);
           }
-          res.cookie("x_auth", user.token).status(200).json({
+          res.cookie(process.env.COOKIE_NAME, user.token).status(200).json({
             loginSuccess: true,
             userId: user._id
           });

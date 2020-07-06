@@ -102,15 +102,18 @@ function* watchSignup(): Generator {
   yield takeLatest(SIGN_UP_REQUEST, signUp);
 }
 
-function authAPI(authData: Action) {
-  return Axios.get("/users/auth", authData);
+function authAPI() {
+  return Axios.get("/users/auth", {
+    withCredentials: true
+  });
 }
 
 function* auth(action: Action): Generator {
   try {
-    yield call(authAPI, action.data);
+    yield call(authAPI);
     yield put({
-      type: AUTH_SUCCESS
+      type: AUTH_SUCCESS,
+      me: action.data
     });
   } catch (error) {
     console.error(error);
