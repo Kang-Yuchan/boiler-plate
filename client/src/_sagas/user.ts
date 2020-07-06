@@ -108,12 +108,11 @@ function authAPI() {
   });
 }
 
-function* auth(action: Action): Generator {
+function* auth(): Generator {
   try {
     yield call(authAPI);
     yield put({
-      type: AUTH_SUCCESS,
-      me: action.data
+      type: AUTH_SUCCESS
     });
   } catch (error) {
     console.error(error);
